@@ -5,7 +5,8 @@
   "main": "/src/index.js",
   "type": "module",
   "scripts": {
-    "start_fs": "node ./src/1_FileManager/utils/fs/$npm_config_file_name.js"
+    "start_fs": "node ./src/1_FileManager/utils/fs/$npm_config_file_name.js",
+    "start_cli": "RSS_NODE_ENV_VAR=testVar node ./src/2_cli/utils/$npm_config_file_name.js"
   },
   "author": "",
   "license": "ISC"
