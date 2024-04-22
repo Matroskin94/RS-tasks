@@ -8,7 +8,8 @@
     "start_fs": "node ./src/1_FileManager/utils/fs/$npm_config_file_name.js",
     "start_cli": "RSS_NODE_ENV_VAR=testVar node ./src/2_cli/utils/$npm_config_file_name.js --add",
     "start_modules": "node ./src/3_Modules/$npm_config_file_name",
-    "start_hash": "node ./src/4_Hash/calcHash.js"
+    "start_hash": "node ./src/4_Hash/calcHash.js",
+    "start_streams": "node ./src/5_Streams//$npm_config_file_name.js"
   },
   "author": "",
   "license": "ISC"
