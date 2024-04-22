@@ -4,7 +4,7 @@ import path from 'path';
 const read = async () => {
   const fileToReadPath = path.join(
     'src',
-    '5_Streams2',
+    '5_Streams',
     'files',
     'fileToRead.txt'
   );
