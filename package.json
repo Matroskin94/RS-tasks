@@ -11,7 +11,8 @@
     "start_hash": "node ./src/4_Hash/calcHash.js",
     "start_streams": "node ./src/5_Streams/$npm_config_file_name.js",
     "start_compression": "node ./src/6_Compressing/$npm_config_file_name.js",
-    "start_worker": "node ./src/7_Worker_threads/main.js"
+    "start_worker": "node ./src/7_Worker_threads/main.js",
+    "start_child_process": "node ./src/8_Child_process/cp.js"
   },
   "author": "",
   "license": "ISC"
