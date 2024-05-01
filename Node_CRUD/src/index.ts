@@ -1,1 +1,3 @@
-console.log('Hello node');
+import { serverStart } from './server/serverStart';
+
+serverStart();
