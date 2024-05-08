@@ -7,6 +7,6 @@
 /Node_CRUD/ca.crt
 /Node_CRUD/ca.srl
 /Node_CRUD/.env
-/Node_CRUD/src/server/localhost.crt
-/Node_CRUD/src/server/localhost.ext
-/Node_CRUD/src/server/localhost.key
+/Node_CRUD/src/server/utils/NetworkService/cert/localhost.crt
+/Node_CRUD/src/server/utils/NetworkService/cert/localhost.ext
+/Node_CRUD/src/server/utils/NetworkService/cert/localhost.key

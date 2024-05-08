@@ -1,0 +1,1 @@
+export const convertToUrlKey = (url: string) => url.replaceAll('/', '_')
