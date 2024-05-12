@@ -1,5 +1,7 @@
-export const API_BASE = 'api'
+import { APP_ENTITIES } from './appEntities';
+
+export const API_BASE = 'api';
 
 export const API = {
-  USERS: `${API_BASE}/users`
-}
+  [APP_ENTITIES.USERS]: '/users',
+};

@@ -5,13 +5,13 @@ import path from 'path';
 import {
   IServiceResponse,
   IServiceRequest,
-  IServiceMessageResult,
   TRequestHandler,
   TRequestsMap,
 } from './types';
 import { DEFAULT_REQUEST_HANDLERS, HTTP_METHOD } from './constants';
 import { convertToUrlKey } from './helpers/convertToUrlKey';
-import { getFullRequestUrl } from './helpers/getFulLRequestURL';
+import { getFullRequestUrl } from './helpers/getFullRequestURL';
+import { getDataFromPOSTRequestWrapper } from './helpers/getDataFromPOSTRequestWrapper';
 
 export class NetworkService {
   apiBase: string;
@@ -43,7 +43,11 @@ export class NetworkService {
           const requestHandler = this.getRequestHandler(reqMethod, reqUrl);
 
           if (requestHandler) {
-            requestHandler(request, response);
+            if (reqMethod === HTTP_METHOD.POST) {
+              getDataFromPOSTRequestWrapper(requestHandler)(request, response);
+            } else {
+              requestHandler(request, response);
+            }
           } else {
             response.statusCode = 404;
             response.end('Request not found');
