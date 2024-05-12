@@ -29,7 +29,9 @@ Change start script for nodemon, and set command like this
 "exec": "npx ts-node-dev --files --transpile-only --respawn --inspect=4430 --project tsconfig.json ./src/index.ts"
 ```
 
-Also, you need to check in broser console `connections` tab, and add `127.0.0.1:PORT_NUMBER`.
+Also, you need to check in browser console `connections` tab, and add `127.0.0.1:PORT_NUMBER`.
+
+Or better to go to `chrome://inspect` page, and choose target (it should be running on 4430 port). But there is a problem, with nodemon. After first launch it works ok, but if you change something in the code, nodemon restarts and after it, there will be an error in console. Need to figure out how to fix it to work with nodemon and chrome without an errors.
 
 ```
 {
