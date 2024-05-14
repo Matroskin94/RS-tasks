@@ -11,7 +11,14 @@ import {
 import { DEFAULT_REQUEST_HANDLERS, HTTP_METHOD } from './constants';
 import { convertToUrlKey } from './helpers/convertToUrlKey';
 import { getFullRequestUrl } from './helpers/getFullRequestURL';
-import { getDataFromPOSTRequestWrapper } from './helpers/getDataFromPOSTRequestWrapper';
+import { modifyPOSTRequestBody } from './helpers/modifyPOSTRequestBody';
+
+// TODO: Add middleware functionality
+// Middlewares are good for request validation and error handling
+// In this task it usefull for request validation
+// Link for req.body validation: https://medium.com/@techsuneel99/validate-incoming-requests-in-node-js-like-a-pro-95fbdff4bc07
+// Link for Middleware/Mediator pattern: https://www.patterns.dev/vanilla/mediator-pattern/
+// Link for Mediator implementation: https://muniftanjim.dev/blog/basic-middleware-pattern-in-javascript/
 
 export class NetworkService {
   apiBase: string;
@@ -44,7 +51,11 @@ export class NetworkService {
 
           if (requestHandler) {
             if (reqMethod === HTTP_METHOD.POST) {
-              getDataFromPOSTRequestWrapper(requestHandler)(request, response);
+              modifyPOSTRequestBody(request, response).then(
+                ({ request: mRequest, response: mResponse }) => {
+                  requestHandler(mRequest, mResponse);
+                }
+              );
             } else {
               requestHandler(request, response);
             }
