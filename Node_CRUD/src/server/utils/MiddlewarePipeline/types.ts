@@ -1,7 +1,7 @@
-export type TNext = () => Promise<void> | void;
+export type TNext<TRequest, TResponse> = () => void;
 
 export type TMiddleware<TRequest, TResponse> = (
   req: TRequest,
   res: TResponse,
-  next: TNext
+  next: TNext<TRequest, TResponse>
 ) => Promise<void> | void;

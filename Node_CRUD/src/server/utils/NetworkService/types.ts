@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import { HTTP_METHOD } from './constants';
+import { MiddlewarePipeline } from '../MiddlewarePipeline/MiddlewarePipeline';
 
 export interface IServiceRequest extends IncomingMessage {
   body?: any;
@@ -20,4 +21,9 @@ export type TRequestHandler = (
   response: IServiceResponse
 ) => void;
 
-export type TRequestsMap = Record<HTTP_METHOD, Record<string, TRequestHandler>>;
+interface IRequestConfig {
+  handler: TRequestHandler;
+  middlewares: MiddlewarePipeline<IServiceRequest, IServiceResponse> | null;
+}
+
+export type TRequestsMap = Record<HTTP_METHOD, Record<string, IRequestConfig>>;
