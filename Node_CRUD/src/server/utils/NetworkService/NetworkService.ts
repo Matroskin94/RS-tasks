@@ -49,7 +49,7 @@ export class NetworkService {
 
           if (requestHandler) {
             const middleware = this.getRequestMiddleware(reqMethod, reqUrl);
-
+            console.log("middleware", middleware);
             middleware
               ?.execute(request, response)
               .then(([updatedRequest, updatedResponse]) => {

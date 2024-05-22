@@ -1,4 +1,10 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "ef793394-8077-43b9-815c-aec483fe60da",
+      "surname": "Surname",
+      "name": "User Name"
+    }
+  ],
   "anotherField": []
 }

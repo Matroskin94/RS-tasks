@@ -11,11 +11,11 @@ export const modifyPOSTRequestBody = (
 
   return new Promise<void>((resolve) => {
     request
-      .on('data', (chunk) => {
+      .on("data", (chunk) => {
         body.push(chunk);
       })
-      .on('end', () => {
-        parsedBody = Buffer.concat(body).toString();
+      .on("end", async () => {
+        parsedBody = await JSON.parse(Buffer.concat(body).toString());
 
         (request as IServiceRequest).body = parsedBody;
 
