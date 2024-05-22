@@ -33,7 +33,7 @@ export class FileService {
       const fileContent = await this.readFileContent();
       const { [this.entity]: currentEntity, ...restFile } = fileContent;
 
-      currentEntity.push(JSON.parse(body));
+      currentEntity.push(body);
 
       const finalFileData = JSON.stringify(
         {

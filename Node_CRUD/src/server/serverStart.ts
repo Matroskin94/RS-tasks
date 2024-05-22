@@ -2,6 +2,7 @@ import { SERVER_CONFIG } from './constants/configs';
 import { API, API_BASE } from './constants/api';
 import { NetworkService } from './utils/NetworkService/NetworkService';
 import { createUser, findAllUsers } from './services/user/userHandlers';
+import { validateUserMiddleware } from './services/user/middlewares/validateUser';
 
 export const serverStart = () => {
   const networkService = new NetworkService({
@@ -10,5 +11,5 @@ export const serverStart = () => {
   });
 
   networkService.get(API.users, findAllUsers);
-  networkService.post(API.users, createUser);
+  networkService.post(API.users, createUser, [validateUserMiddleware]);
 };
