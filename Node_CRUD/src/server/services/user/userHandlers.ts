@@ -28,8 +28,15 @@ export const getUserById = async (
   res: IServiceResponse
 ) => {
   try {
+    userModel
+      .getByKey('id', req?.params?.userId || '')
+      .then((entityContent) => {
+        res.statusCode = 200;
+        res.write(JSON.stringify(entityContent));
+        res.end();
+      });
   } catch (e) {
-    console.log("Get suer by id error: ", e);
+    console.log('Get user by id error: ', e);
 
     res.statusCode = 500;
     res.write("Internal server error");

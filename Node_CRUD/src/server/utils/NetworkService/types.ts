@@ -4,6 +4,7 @@ import { MiddlewarePipeline } from '../MiddlewarePipeline/MiddlewarePipeline';
 
 export interface IServiceRequest extends IncomingMessage {
   body?: any;
+  params?: Record<string, string>;
 }
 
 export interface IServiceResponse extends ServerResponse<IncomingMessage> {
@@ -21,9 +22,11 @@ export type TRequestHandler = (
   response: IServiceResponse
 ) => void;
 
-interface IRequestConfig {
+export interface IRequestConfig {
   handler: TRequestHandler;
   middlewares: MiddlewarePipeline<IServiceRequest, IServiceResponse> | null;
+  pathTemplate: string[];
+  pathUrl: string;
 }
 
-export type TRequestsMap = Record<HTTP_METHOD, Record<string, IRequestConfig>>;
+export type TRequestsMap<TEntityType> = Record<HTTP_METHOD, TEntityType>;
