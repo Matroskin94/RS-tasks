@@ -1,8 +1,13 @@
 import { SERVER_CONFIG } from './constants/configs';
 import { API, API_BASE } from './constants/api';
 import { NetworkService } from './utils/NetworkService/NetworkService';
-import { createUser, findAllUsers } from './services/user/userHandlers';
-import { validateUserMiddleware } from './services/user/middlewares/validateUser';
+import {
+  createUser,
+  findAllUsers,
+  getUserById,
+} from './services/user/userHandlers';
+import { validateUserBodyMiddleware } from './services/user/middlewares/validateUserBodyMiddleware';
+import { validateUuidIdParam } from './utils/middlewares/validateUuidIdParam';
 
 export const serverStart = () => {
   const networkService = new NetworkService({
@@ -11,5 +16,8 @@ export const serverStart = () => {
   });
 
   networkService.get(API.users, findAllUsers);
-  networkService.post(API.users, createUser, [validateUserMiddleware]);
+  networkService.get(`${API.users}/:userId`, getUserById, [
+    validateUuidIdParam('userId'),
+  ]);
+  networkService.post(API.users, createUser, [validateUserBodyMiddleware]);
 };

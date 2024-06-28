@@ -1,11 +1,11 @@
-import { TMiddleware } from "../../../utils/MiddlewarePipeline/types";
+import { TMiddleware } from '../../../utils/MiddlewarePipeline/types';
 import {
   IServiceRequest,
   IServiceResponse,
-} from "../../../utils/NetworkService/types";
-import { userSchema } from "../model";
+} from '../../../utils/NetworkService/types';
+import { userSchema } from '../model';
 
-export const validateUserMiddleware: TMiddleware<
+export const validateUserBodyMiddleware: TMiddleware<
   IServiceRequest,
   IServiceResponse
 > = (req, res, next) => {
