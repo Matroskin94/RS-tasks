@@ -3,8 +3,9 @@ import fs from 'fs';
 import fsPromise from 'fs/promises';
 
 import { APP_ENTITIES } from '../../constants/appEntities';
+import { errorCodes } from '../../constants/errorCodes';
 
-export class FileService {
+export class FileService<TEntity extends { id: string }> {
   protected entity: APP_ENTITIES;
   protected filePath: string;
   constructor({ entity }: { entity: APP_ENTITIES }) {
@@ -16,7 +17,7 @@ export class FileService {
     return await this.readEntityFromFile();
   }
 
-  async getByKey(key: string, value: string | number | boolean) {
+  async getByKey(key: keyof TEntity, value: string | number | boolean) {
     const entities = await this.readEntityFromFile().then((allEntities) => {
       const resultEntities = allEntities.filter(
         (entity) => entity[key] === value
@@ -28,26 +29,58 @@ export class FileService {
     return entities;
   }
 
-  async createItem(body: any) {
+  async createItem(body: TEntity) {
     try {
       const fileContent = await this.readFileContent();
-      const { [this.entity]: currentEntity, ...restFile } = fileContent;
+      const { [this.entity]: currentEntity = [] } = fileContent;
 
       currentEntity.push(body);
 
-      const finalFileData = JSON.stringify(
-        {
-          [this.entity]: currentEntity,
-          ...restFile,
-        },
-        null,
-        2
-      );
-      await fsPromise.writeFile(this.filePath, finalFileData);
+      await this.writeEntityContent(currentEntity);
     } catch (e) {
       console.log('FileService, createItem error: ', e);
 
       throw new Error('FileService: Create item error');
+    }
+  }
+
+  async deleteItemById(id: string) {
+    try {
+      const fileContent = await this.readFileContent();
+
+      const updatedEntities = fileContent[this.entity].filter(
+        (entity: TEntity) => entity.id !== id
+      );
+
+      this.writeEntityContent(updatedEntities);
+    } catch (e) {
+      console.log('FileService, deleteItemById error: ', e);
+    }
+  }
+
+  async updateItemById(id: string, body: Partial<TEntity>) {
+    try {
+      const fileContent = await this.readFileContent();
+      let isItemExist = false;
+
+      const updatedEntities = fileContent[this.entity].map(
+        (entity: TEntity) => {
+          if (entity.id === id) {
+            isItemExist = true;
+            return { ...entity, ...body };
+          }
+
+          return entity;
+        }
+      );
+
+      if (isItemExist) {
+        this.writeEntityContent(updatedEntities);
+      } else {
+        return Promise.reject(errorCodes.NOT_FOUND);
+      }
+    } catch (e) {
+      console.log('FileService, updateItemById error: ', e);
     }
   }
 
@@ -66,13 +99,27 @@ export class FileService {
     }
   }
 
-  protected async readEntityFromFile(): Promise<any[]> {
+  protected async writeEntityContent(content: TEntity[]) {
+    const fileContent = await this.readFileContent();
+    const { [this.entity]: _currentEntity, ...restFile } = fileContent;
+    const finalFileData = JSON.stringify(
+      {
+        [this.entity]: content,
+        ...restFile,
+      },
+      null,
+      2
+    );
+    await fsPromise.writeFile(this.filePath, finalFileData);
+  }
+
+  protected async readEntityFromFile(): Promise<TEntity[]> {
     try {
       const fileContent = await this.readFileContent();
 
       return fileContent[this.entity] || [];
     } catch (e) {
-      console.log('FileService: readEntityFromFile, error', e)
+      console.log('FileService: readEntityFromFile, error', e);
 
       throw new Error(`FileService: read entity from file error: ${e}`);
     }

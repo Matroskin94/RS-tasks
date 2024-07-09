@@ -65,8 +65,16 @@ export class NetworkService {
 
             middleware
               ?.execute(request, response)
-              .then(([updatedRequest, updatedResponse]) => {
-                requestHandler(updatedRequest, updatedResponse);
+              .then(([updatedRequest, updatedResponse]) =>
+                requestHandler(updatedRequest, updatedResponse)
+              )
+              .catch((e) => {
+                if (e.code) {
+                  response.statusCode = e.code;
+                  response.write(e.message);
+                  response.end();
+                }
+                console.log('error in handler', e);
               });
           } else {
             response.statusCode = 404;
@@ -109,13 +117,21 @@ export class NetworkService {
     callback: TRequestHandler,
     middlewares: TMiddleware<IServiceRequest, IServiceResponse>[] = []
   ): void {
-    const fullUrl = getFullRequestUrl(this.apiBase, url);
+    if (!this.getRequest(HTTP_METHOD.PUT, url)) {
+      const putDefaultMiddlewares = [modifyPOSTRequestBody];
 
-    // TODO: Update to this.getRequest, this.setRequest methods
-    if (!this.getRequestHandler(HTTP_METHOD.PUT, fullUrl)) {
-      this.setRequestHandler(HTTP_METHOD.PUT, fullUrl, callback);
-      this.setRequestMiddleware(HTTP_METHOD.PUT, fullUrl, middlewares);
+      this.setRequest(HTTP_METHOD.PUT, url, callback, [
+        ...putDefaultMiddlewares,
+        ...middlewares,
+      ]);
     }
+    // const fullUrl = getFullRequestUrl(this.apiBase, url);
+
+    // // TODO: Update to this.getRequest, this.setRequest methods
+    // if (!this.getRequestHandler(HTTP_METHOD.PUT, fullUrl)) {
+    //   this.setRequestHandler(HTTP_METHOD.PUT, fullUrl, callback);
+    //   this.setRequestMiddleware(HTTP_METHOD.PUT, fullUrl, middlewares);
+    // }
   }
 
   delete(
