@@ -18,8 +18,8 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
     "dotenv": "^16.4.5",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "yup": "^1.4.0"
   }
 }

@@ -5,6 +5,7 @@ import {
   createUser,
   findAllUsers,
   getUserById,
+  updateUser,
 } from './services/user/userHandlers';
 import { validateUserBodyMiddleware } from './services/user/middlewares/validateUserBodyMiddleware';
 import { validateUuidIdParam } from './utils/middlewares/validateUuidIdParam';
@@ -20,4 +21,8 @@ export const serverStart = () => {
     validateUuidIdParam('userId'),
   ]);
   networkService.post(API.users, createUser, [validateUserBodyMiddleware]);
+  networkService.put(`${API.users}/:userId`, updateUser, [
+    validateUserBodyMiddleware,
+    validateUuidIdParam('userId'),
+  ]);
 };
