@@ -93,3 +93,20 @@ export const updateUser = async (
     res.end();
   }
 };
+
+export const deleteUser = async (req: IServiceRequest, res: IServiceResponse) => {
+  try {
+    await userModel.deleteItemById(req?.params?.userId || '');
+
+    res.statusCode = 204;
+    res.end();
+  } catch (e) {
+    console.log('Delete user error: ', e);
+    if (errorCodes.NOT_FOUND === e) {
+      return Promise.reject({ code: 404, message: 'User not found' });
+    }
+    res.statusCode = 500;
+    res.write('Internal server error');
+    res.end();
+  }
+}

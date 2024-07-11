@@ -47,12 +47,23 @@ export class FileService<TEntity extends { id: string }> {
   async deleteItemById(id: string) {
     try {
       const fileContent = await this.readFileContent();
+      let isItemExist = false;
 
       const updatedEntities = fileContent[this.entity].filter(
-        (entity: TEntity) => entity.id !== id
+        (entity: TEntity) => {
+          if (entity.id === id) {
+            isItemExist = true;
+          }
+
+          return entity.id !== id;
+        }
       );
 
-      this.writeEntityContent(updatedEntities);
+      if (isItemExist) {
+        this.writeEntityContent(updatedEntities);
+      } else {
+        return Promise.reject(errorCodes.NOT_FOUND);
+      }
     } catch (e) {
       console.log('FileService, deleteItemById error: ', e);
     }

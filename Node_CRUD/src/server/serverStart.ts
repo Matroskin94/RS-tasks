@@ -3,6 +3,7 @@ import { API, API_BASE } from './constants/api';
 import { NetworkService } from './utils/NetworkService/NetworkService';
 import {
   createUser,
+  deleteUser,
   findAllUsers,
   getUserById,
   updateUser,
@@ -23,6 +24,9 @@ export const serverStart = () => {
   networkService.post(API.users, createUser, [validateUserBodyMiddleware]);
   networkService.put(`${API.users}/:userId`, updateUser, [
     validateUserBodyMiddleware,
+    validateUuidIdParam('userId'),
+  ]);
+  networkService.delete(`${API.users}/:userId`, deleteUser, [
     validateUuidIdParam('userId'),
   ]);
 };
