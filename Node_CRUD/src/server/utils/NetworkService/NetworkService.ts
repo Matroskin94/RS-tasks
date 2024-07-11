@@ -125,13 +125,6 @@ export class NetworkService {
         ...middlewares,
       ]);
     }
-    // const fullUrl = getFullRequestUrl(this.apiBase, url);
-
-    // // TODO: Update to this.getRequest, this.setRequest methods
-    // if (!this.getRequestHandler(HTTP_METHOD.PUT, fullUrl)) {
-    //   this.setRequestHandler(HTTP_METHOD.PUT, fullUrl, callback);
-    //   this.setRequestMiddleware(HTTP_METHOD.PUT, fullUrl, middlewares);
-    // }
   }
 
   delete(
@@ -139,12 +132,8 @@ export class NetworkService {
     callback: TRequestHandler,
     middlewares: TMiddleware<IServiceRequest, IServiceResponse>[] = []
   ): void {
-    const fullUrl = getFullRequestUrl(this.apiBase, url);
-
-    // TODO: Update to this.getRequest, this.setRequest methods
-    if (!this.getRequestHandler(HTTP_METHOD.DELETE, fullUrl)) {
-      this.setRequestHandler(HTTP_METHOD.DELETE, fullUrl, callback);
-      this.setRequestMiddleware(HTTP_METHOD.PUT, fullUrl, middlewares);
+    if (!this.getRequest(HTTP_METHOD.DELETE, url)) {
+      this.setRequest(HTTP_METHOD.DELETE, url, callback, middlewares);
     }
   }
 

@@ -1,11 +1,6 @@
 {
   "users": [
     {
-      "id": "ef793394-8077-43b9-815c-aec483fe60da",
-      "surname": "Surname",
-      "name": "User Name updated"
-    },
-    {
       "id": "f146daac-1769-471d-bbdb-d5bc55eaef1a",
       "surname": "Surname",
       "name": "User Name"
